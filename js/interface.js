@@ -75,7 +75,7 @@ function buildFilters(interests, departments, courses) {
   // GenEd areas
   html += accordionSection('areas', 'GenEd Areas', buildGenEdAreaList(genEdAreaMeta));
   // Keyword filter
-  html += accordionSection('keyword', 'Keyword filter', '<label for="filter-keyword" class="rvt-label rvt-m-all-remove">Search by Keyword:</label><input class="" type="text" id="filter-keyword">');
+  html += accordionSection('keyword', 'Keyword filter', '<label for="filter-keyword" class="rvt-label rvt-m-all-remove">Search by Keyword:</label><input class="triggerFetch" type="text" id="filter-keyword">');
   // Interest categories
   html += accordionSection('interests', 'Interest Categories', buildInterestList(interests));
   // Departments
