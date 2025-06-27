@@ -15,19 +15,13 @@ export function uniqueAccordionId(prefix = 'accordion') {
 }
 
 export async function initInterface(courses, onFilterChange) {
-  const [interests, departments] = await Promise.all([
-    fetch('gened-data/explore-interests.json').then(r => r.json()),
-    fetch('gened-data/departments.json').then(r => r.json())
-  ]);
-
   const container = document.querySelector('#interface');
-  let interests, departments, courses;
+  let interests, departments;
   try {
     // Load interface data used for filters.
-    [interests, departments, courses] = await Promise.all([
+    [interests, departments] = await Promise.all([
       fetch('gened-data/explore-interests.json').then(r => r.json()),
-      fetch('gened-data/departments.json').then(r => r.json()),
-      fetch('gened-data/explore-gened.json').then(r => r.json())
+      fetch('gened-data/departments.json').then(r => r.json())
     ]);
   } catch (err) {
     // Show a placeholder alert when the filter data cannot be retrieved.
