@@ -21,3 +21,8 @@ nav[aria-label="Pagination"] .rvt-pagination {
     display: flex;
     align-items: center;
 }
+
+/* Adjust h4 font size */
+h4 {
+    font-size: .9rem;
+}
