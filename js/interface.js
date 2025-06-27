@@ -7,6 +7,9 @@ export async function initInterface() {
 
   const container = document.querySelector('#interface');
   container.innerHTML = buildFilters(interests, departments, courses);
+  if (window.Rivet && typeof window.Rivet.init === 'function') {
+    window.Rivet.init(container);
+  }
 }
 
 function buildFilters(interests, departments, courses) {
