@@ -144,7 +144,7 @@ function buildGenEdAreaList(meta) {
       </li>`).join('');
 
   return `
-    <fieldset class="rvt-fieldset">
+    <fieldset class="rvt-fieldset" id="gened-area-filter">
       <legend class="rvt-sr-only">GenEd Areas</legend>
       <ul class="rvt-list-plain rvt-width-xl">
         <li>
