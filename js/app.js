@@ -184,6 +184,18 @@ function returnFocus() {
   lastFocusedId = null;
 }
 
+function updateStatus(totalResults, page, totalPages) {
+  const status = document.getElementById('status-announcer');
+  if (!status) return;
+  let message = '';
+  if (totalPages > 1) {
+    message = `Page ${page} of ${totalPages}, ${totalResults} courses total`;
+  } else {
+    message = `${totalResults} course${totalResults === 1 ? '' : 's'}`;
+  }
+  status.textContent = message;
+}
+
 function renderPagination() {
   const totalPages = Math.ceil(filteredCourses.length / pageSize);
   if (totalPages <= 1) return '';
@@ -233,6 +245,7 @@ function render() {
   html += renderCourses(pageCourses);
   html += renderPagination();
   container.innerHTML = html;
+  updateStatus(filteredCourses.length, currentPage, Math.ceil(filteredCourses.length / pageSize));
   if (window.Rivet && typeof window.Rivet.init === 'function') {
     // Rivet was initialized globally, so dynamically added accordions are
     // automatically picked up by its MutationObserver.
