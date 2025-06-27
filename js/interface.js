@@ -156,7 +156,7 @@ function accordionSection(key, title, innerHtml, init = false) {
     <button class="rvt-accordion__toggle rvt-p-all-xs" id="${id}-label" data-rvt-accordion-trigger="${id}" aria-expanded="false">
       <span class="rvt-accordion__toggle-text${key==='areas'? ' rvt-ts-sm':''}">${title}</span>
       <div class="rvt-accordion__toggle-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
           <g fill="currentColor">
             <path class="rvt-accordion__icon-bar" d="M8,15a1,1,0,0,1-1-1V2A1,1,0,0,1,9,2V14A1,1,0,0,1,8,15Z"></path>
             <path d="M14,9H2A1,1,0,0,1,2,7H14a1,1,0,0,1,0,2Z"></path>
