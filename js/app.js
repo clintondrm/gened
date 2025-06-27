@@ -47,13 +47,16 @@ function renderCourses(courses) {
 function renderPagination() {
   const totalPages = Math.ceil(filteredCourses.length / pageSize);
   if (totalPages <= 1) return '';
-  let html = '<nav class="rvt-pagination rvt-m-top-md" aria-label="Pagination"><ul class="rvt-pagination__list">';
+  let html = '<nav role="navigation" aria-label="Pagination" class="rvt-m-top-md">';
+  html += '<ul class="rvt-pagination">';
   for (let i = 1; i <= totalPages; i++) {
+    html += '<li class="rvt-pagination__item">';
     if (i === currentPage) {
-      html += `<li class="rvt-pagination__item"><span class="rvt-pagination__link" aria-current="page">${i}</span></li>`;
+      html += `<a href="#0" class="rvt-pagination__link pagination-btn" aria-label="Page ${i}" aria-current="page" data-page="${i}">${i}</a>`;
     } else {
-      html += `<li class="rvt-pagination__item"><button class="rvt-button rvt-button--ghost rvt-pagination__link pagination-btn" data-page="${i}">${i}</button></li>`;
+      html += `<a href="#0" class="rvt-pagination__link pagination-btn" aria-label="Page ${i}" data-page="${i}">${i}</a>`;
     }
+    html += '</li>';
   }
   html += '</ul></nav>';
   return html;
@@ -76,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('#course-list').addEventListener('click', (e) => {
     const btn = e.target.closest('.pagination-btn');
     if (btn) {
+      e.preventDefault();
       currentPage = parseInt(btn.dataset.page, 10);
       render();
     }
