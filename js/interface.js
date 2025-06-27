@@ -38,9 +38,10 @@ export async function initInterface(courses, onFilterChange) {
   }
 
   container.innerHTML = buildFilters(interests, departments, courses);
-  if (window.Rivet && typeof window.Rivet.init === 'function') {
-    window.Rivet.init(container);
-  }
+
+  // Rivet's components are initialized globally once in index.html. The
+  // library automatically handles any DOM nodes added later via its
+  // MutationObserver so we no longer need to call `Rivet.init` here.
 
   function describeInteraction(target) {
     if (!target) return '';
