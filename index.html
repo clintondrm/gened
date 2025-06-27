@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="rvt-layout">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>General Education Data</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 2em; }
-        ul { list-style-type: none; padding: 0; }
-        li { margin-bottom: 0.5em; }
-    </style>
+    <link rel="stylesheet" href="https://cdn.iu.edu/rivet/latest/rivet.min.css">
+    <script defer src="https://cdn.iu.edu/rivet/latest/rivet.min.js"></script>
 </head>
 <body>
-    <h1>General Education Course Data</h1>
-    <p>This repository provides JSON data sets for exploring the general education curriculum.</p>
-    <ul>
-        <li><a href="gened-data/gened-courses.json">gened-courses.json</a></li>
-        <li><a href="gened-data/departments.json">departments.json</a></li>
-        <li><a href="gened-data/descriptions.json">descriptions.json</a></li>
-        <li><a href="gened-data/explore-gened.json">explore-gened.json</a></li>
-        <li><a href="gened-data/explore-interests.json">explore-interests.json</a></li>
-    </ul>
+    <header class="rvt-header">
+        <div class="rvt-container-lg">
+            <div class="rvt-header__trident"><a href="https://www.iu.edu">IU</a></div>
+            <span class="rvt-header__title">General Education Course Data</span>
+        </div>
+    </header>
+    <main class="rvt-container-lg rvt-p-tb-md">
+        <p>This repository provides JSON data sets for exploring the general education curriculum.</p>
+        <ul class="rvt-list-plain rvt-m-top-md">
+            <li><a href="gened-data/gened-courses.json">gened-courses.json</a></li>
+            <li><a href="gened-data/departments.json">departments.json</a></li>
+            <li><a href="gened-data/descriptions.json">descriptions.json</a></li>
+            <li><a href="gened-data/explore-gened.json">explore-gened.json</a></li>
+            <li><a href="gened-data/explore-interests.json">explore-interests.json</a></li>
+        </ul>
+    </main>
 </body>
 </html>
