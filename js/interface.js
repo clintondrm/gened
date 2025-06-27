@@ -14,7 +14,12 @@ export function uniqueAccordionId(prefix = 'accordion') {
   return `${prefix}-${accordionCounter}`;
 }
 
-export async function initInterface(onFilterChange) {
+export async function initInterface(courses, onFilterChange) {
+  const [interests, departments] = await Promise.all([
+    fetch('gened-data/explore-interests.json').then(r => r.json()),
+    fetch('gened-data/departments.json').then(r => r.json())
+  ]);
+
   const container = document.querySelector('#interface');
   let interests, departments, courses;
   try {
