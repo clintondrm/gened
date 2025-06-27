@@ -250,4 +250,4 @@ function collectFilters(root) {
   };
 }
 
-export { collectFilters, uniqueAccordionId };
+export { collectFilters };
