@@ -48,7 +48,7 @@ function buildFilters(interests, departments, courses) {
 function accordionSection(key, title, innerHtml) {
   const id = `filter-${key}`;
   return `<h4 class="rvt-accordion__summary">
-    <button class="rvt-accordion__toggle" id="${id}-label" data-rvt-accordion-trigger="${id}" aria-expanded="true">
+    <button class="rvt-accordion__toggle" id="${id}-label" data-rvt-accordion-trigger="${id}" aria-expanded="false">
       <span class="rvt-accordion__toggle-text${key==='areas'? ' rvt-ts-sm':''}">${title}</span>
       <div class="rvt-accordion__toggle-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -83,8 +83,14 @@ function buildInterestList(interests) {
 }
 
 function buildDepartmentList(departments) {
-  const entries = Object.values(departments).map(d => ({code: d.CRS_SUBJ_DEPT_CD, label: d.CRS_SUBJ_DESC}));
-  entries.sort((a,b) => a.label.localeCompare(b.label));
+  const map = new Map();
+  Object.values(departments).forEach(d => {
+    if (!map.has(d.CRS_SUBJ_DEPT_CD)) {
+      map.set(d.CRS_SUBJ_DEPT_CD, { code: d.CRS_SUBJ_DEPT_CD, label: d.CRS_SUBJ_DESC });
+    }
+  });
+  const entries = Array.from(map.values());
+  entries.sort((a, b) => a.label.localeCompare(b.label));
   let html = '<fieldset class="rvt-fieldset"><legend class="rvt-sr-only">Course Departments</legend><ul class="rvt-list-plain rvt-width-xl">';
   entries.forEach(dep => {
     html += `<li><div class="rvt-checkbox"><input class="triggerFetch" type="checkbox" name="department-checkboxes" data-value="${dep.code}" id="department-checkbox-${dep.code}"><label for="department-checkbox-${dep.code}">${dep.label}</label></div></li>`;
