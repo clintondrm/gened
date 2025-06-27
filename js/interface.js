@@ -153,7 +153,7 @@ function accordionSection(key, title, innerHtml, init = false) {
   const id = `filter-${key}`;
   const initAttr = init ? ' data-rvt-accordion-panel-init="true"' : '';
   return `<h4 class="rvt-accordion__summary">
-    <button class="rvt-accordion__toggle" id="${id}-label" data-rvt-accordion-trigger="${id}" aria-expanded="false">
+    <button class="rvt-accordion__toggle rvt-p-all-xs" id="${id}-label" data-rvt-accordion-trigger="${id}" aria-expanded="false">
       <span class="rvt-accordion__toggle-text${key==='areas'? ' rvt-ts-sm':''}">${title}</span>
       <div class="rvt-accordion__toggle-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
