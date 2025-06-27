@@ -39,7 +39,29 @@ export async function initInterface(courses, onFilterChange) {
     window.Rivet.init(container);
   }
 
-  function handleChange() {
+  function describeInteraction(target) {
+    if (!target) return '';
+    const label = target.labels && target.labels.length
+      ? target.labels[0].innerText.trim()
+      : (target.id || target.name || 'input');
+    if (target.type === 'checkbox') {
+      return `${label} ${target.checked ? 'checked' : 'unchecked'}`;
+    }
+    if (target.type === 'radio') {
+      return `${label} selected`;
+    }
+    if (target.type === 'text') {
+      return `${label} set to "${target.value}"`;
+    }
+    return `${label} changed`;
+  }
+
+  function handleChange(e) {
+    if (e && e.target) {
+      console.log(`Interface interaction: ${describeInteraction(e.target)}`);
+    } else {
+      console.log('Interface interaction occurred');
+    }
     if (typeof onFilterChange === 'function') {
       onFilterChange(collectFilters(container));
     }
@@ -76,7 +98,7 @@ export async function initInterface(courses, onFilterChange) {
         allArea.checked = true;
       }
     }
-    handleChange();
+    handleChange(e);
   }
 
   allArea.addEventListener('change', handleAreaChange);
