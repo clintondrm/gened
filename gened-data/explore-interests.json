@@ -1,0 +1,126 @@
+[
+    {
+        "value": "arts",
+        "label": "Art, Design, Performance",
+        "interests": [
+            "Art",
+            "Crafts",
+            "Design",
+            "Fashion",
+            "Movies",
+            "Music",
+            "Performance",
+            "Photography"
+        ]
+    },
+    {
+        "value": "business",
+        "label": "Business & Organizations",
+        "interests": [
+            "Business",
+            "Event Planning",
+            "Finance",
+            "Leadership",
+            "Management",
+            "Marketing",
+            "Public Relations"
+        ]
+    },
+    {
+        "value": "communication",
+        "label": "Communication",
+        "interests": [
+            "Communication",
+            "Journalism",
+            "Language",
+            "Literature",
+            "Media",
+            "News",
+            "Pop Culture",
+            "Writing"
+        ]
+    },
+    {
+        "value": "education",
+        "label": "Education",
+        "interests": [
+            "Children",
+            "Teaching"
+        ]
+    },
+    {
+        "value": "environment",
+        "label": "Environment",
+        "interests": [
+            "Animals",
+            "Environment",
+            "Food",
+            "Nature",
+            "Sustainability"
+        ]
+    },
+    {
+        "value": "world_regions",
+        "label": "Global Perspectives",
+        "interests": [
+            "Africa",
+            "Asia",
+            "Central America",
+            "Europe",
+            "International",
+            "North America",
+            "South America",
+            "Travel"
+        ]
+    },
+    {
+        "value": "health",
+        "label": "Health and Wellness",
+        "interests": [
+            "Counseling",
+            "Fitness",
+            "Healthcare",
+            "Nutrition",
+            "Rehabilitation",
+            "Sports"
+        ]
+    },
+    {
+        "value": "law",
+        "label": "Law and Justice",
+        "interests": [
+            "Conflict Resolution",
+            "Forensics",
+            "Government",
+            "Human Rights",
+            "Legal Issues"
+        ]
+    },
+    {
+        "value": "science",
+        "label": "Science, Technology, Engineering",
+        "interests": [
+            "Data Analysis",
+            "Internet",
+            "Math",
+            "Programming",
+            "Science",
+            "Security",
+            "Technology",
+            "Video Games"
+        ]
+    },
+    {
+        "value": "soc",
+        "label": "Society, Community, Culture",
+        "interests": [
+            "Culture",
+            "Gender and LGBTQ+",
+            "Helping People",
+            "History",
+            "Human Behavior",
+            "Philosophy",
+            "Religion"
+        ]
+    }
+]
