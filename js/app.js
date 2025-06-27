@@ -266,9 +266,6 @@ function applyFilters(filters) {
       if (!match) return false;
     }
 
-    if (filters.openseats) {
-      if (!c.available || !c.available.some(a => String(a.term) === String(filters.openseats))) return false;
-    }
 
     if (filters.approvalTerm) {
       if (String(c.firstApprovalYearCode) !== String(filters.approvalTerm)) return false;

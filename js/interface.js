@@ -113,7 +113,6 @@ export async function initInterface(courses, onFilterChange) {
 
 function buildFilters(interests, departments, courses) {
 
-  const openTerms = collectOpenTerms(courses);
   const approvalTerms = collectApprovalTerms(courses);
 
   let html = '';
@@ -131,8 +130,6 @@ function buildFilters(interests, departments, courses) {
   html += accordionSection('interests', 'Interest Categories', buildInterestList(interests));
   // Departments
   html += accordionSection('department', 'Course Departments', buildDepartmentList(departments));
-  // Open seats
-  html += accordionSection('openseats', 'Courses with open seats', buildOpenSeatsList(openTerms));
   // Historical approvals
   html += accordionSection('approval-terms', 'Historical approvals', buildApprovalList(approvalTerms));
 
@@ -219,14 +216,6 @@ function buildDepartmentList(departments) {
   return html;
 }
 
-function buildOpenSeatsList(terms) {
-  let html = '<fieldset class="rvt-fieldset"><legend class="rvt-sr-only">Courses with open seats</legend><ul class="rvt-list-plain rvt-width-xl">';
-  terms.forEach(t => {
-    html += `<li><div class="rvt-radio"><input class="triggerFetch" type="radio" name="openseats-radios" data-value="${t.term}" id="openseats-radios-${t.term}"><label for="openseats-radios-${t.term}">${t.label}</label></div></li>`;
-  });
-  html += '</ul></fieldset>';
-  return html;
-}
 
 function buildApprovalList(codes) {
   let html = '<fieldset class="rvt-fieldset"><legend class="rvt-sr-only">Historical approvals</legend><ul class="rvt-list-plain rvt-width-xl">';
@@ -238,17 +227,6 @@ function buildApprovalList(codes) {
   return html;
 }
 
-function collectOpenTerms(courses) {
-  const map = new Map();
-  courses.forEach(c => {
-    if (Array.isArray(c.available)) {
-      c.available.forEach(a => {
-        if (!map.has(a.term)) map.set(a.term, a.label);
-      });
-    }
-  });
-  return Array.from(map.entries()).map(([term,label])=>({term,label})).sort((a,b)=>a.term-b.term);
-}
 
 function collectApprovalTerms(courses) {
   const set = new Set();
@@ -266,14 +244,12 @@ function collectFilters(root) {
   const areas = Array.from(root.querySelectorAll('input[name="area-checkboxes"]:checked')).map(el => el.dataset.value);
   const interests = Array.from(root.querySelectorAll('input[name="interest-checkboxes"]:checked')).map(el => el.dataset.value);
   const departments = Array.from(root.querySelectorAll('input[name="department-checkboxes"]:checked')).map(el => el.dataset.value);
-  const open = root.querySelector('input[name="openseats-radios"]:checked');
   const approval = root.querySelector('input[name="approval-terms"]:checked');
   const keyword = root.querySelector(`#${keywordInputId}`);
   return {
     areas,
     interests,
     departments,
-    openseats: open ? open.dataset.value : null,
     approvalTerm: approval ? approval.dataset.value : null,
     keyword: keyword ? keyword.value : ''
   };
