@@ -8,10 +8,13 @@ export const genEdAreaMeta = {
   'WL': { label: 'World Languages', color: '#DC231E' }
 };
 
-let accordionCounter = 0;
+const counterKey = '__genedAccordionCounter';
 export function uniqueAccordionId(prefix = 'accordion') {
-  accordionCounter += 1;
-  return `${prefix}-${accordionCounter}`;
+  if (typeof globalThis[counterKey] !== 'number') {
+    globalThis[counterKey] = 0;
+  }
+  globalThis[counterKey] += 1;
+  return `${prefix}-${globalThis[counterKey]}`;
 }
 
 let keywordInputId = 'filter-keyword';
