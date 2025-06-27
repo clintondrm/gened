@@ -1,4 +1,4 @@
-import { initInterface } from './interface.js';
+import { initInterface, genEdAreaMeta } from './interface.js';
 
 const pageSize = 50;
 let allCourses = [];
@@ -18,16 +18,15 @@ async function loadCourses() {
 }
 
 function renderCourses(courses) {
-  const badgeClass = {
-    'AH': 'teal',
-    'EC': 'orange',
-    'MM': 'orange',
-    'NM': 'green',
-    'NS': 'green',
-    'SH': 'blue',
-    'WC': 'purple',
-    'WL': 'red'
-  };
+  const areaColors = {};
+  Object.entries(genEdAreaMeta).forEach(([code, info]) => {
+    if (code === 'NM|NS') {
+      areaColors['NM'] = info.color;
+      areaColors['NS'] = info.color;
+    } else {
+      areaColors[code] = info.color;
+    }
+  });
 
   let html = '<div class="rvt-accordion" data-rvt-accordion="course-accordion">';
   courses.forEach(c => {
