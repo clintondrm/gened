@@ -223,7 +223,13 @@ function render() {
   captureFocus();
   const start = (currentPage - 1) * pageSize;
   const pageCourses = filteredCourses.slice(start, start + pageSize);
-  let html = `<h3>${filteredCourses.length} course results</h3>`;
+  const showingStart = filteredCourses.length ? start + 1 : 0;
+  const showingEnd = Math.min(start + pageSize, filteredCourses.length);
+  let html = `<h3>${filteredCourses.length} Courses`;
+  if (filteredCourses.length) {
+    html += ` (Showing Courses ${showingStart}-${showingEnd})`;
+  }
+  html += `</h3>`;
   html += renderCourses(pageCourses);
   html += renderPagination();
   container.innerHTML = html;
