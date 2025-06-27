@@ -256,7 +256,8 @@ function applyFilters(filters) {
     }
 
     if (filters.interests && filters.interests.length) {
-      if (!c.interests || !filters.interests.some(i => c.interests.includes(i))) return false;
+      const cats = c.interestCategories || [];
+      if (!filters.interests.some(i => cats.includes(i))) return false;
     }
 
     if (filters.keyword) {
