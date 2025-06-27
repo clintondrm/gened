@@ -1,4 +1,4 @@
-import { initInterface, genEdAreaMeta } from './interface.js';
+import { initInterface, genEdAreaMeta, collectFilters } from './interface.js';
 
 const pageSize = 50;
 let allCourses = [];
@@ -206,3 +206,12 @@ function applyFilters(filters) {
   currentPage = 1;
   render();
 }
+
+function filterCourseList() {
+  const root = document.querySelector('#interface');
+  if (!root) return;
+  const filters = collectFilters(root);
+  applyFilters(filters);
+}
+
+export { filterCourseList };
