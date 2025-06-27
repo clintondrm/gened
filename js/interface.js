@@ -1,4 +1,4 @@
-export async function initInterface() {
+export async function initInterface(onFilterChange) {
   const [interests, departments, courses] = await Promise.all([
     fetch('gened-data/explore-interests.json').then(r => r.json()),
     fetch('gened-data/departments.json').then(r => r.json()),
@@ -10,6 +10,19 @@ export async function initInterface() {
   if (window.Rivet && typeof window.Rivet.init === 'function') {
     window.Rivet.init(container);
   }
+
+  function handleChange() {
+    if (typeof onFilterChange === 'function') {
+      onFilterChange(collectFilters(container));
+    }
+  }
+
+  container.querySelectorAll('.triggerFetch').forEach(el => {
+    el.addEventListener('change', handleChange);
+    el.addEventListener('input', handleChange);
+  });
+
+  handleChange();
 }
 
 function buildFilters(interests, departments, courses) {
@@ -144,3 +157,22 @@ function approvalLabel(code) {
   const end = start + 1;
   return `${start}\u2013${end} Academic Year`;
 }
+
+function collectFilters(root) {
+  const areas = Array.from(root.querySelectorAll('input[name="area-checkboxes"]:checked')).map(el => el.dataset.value);
+  const interests = Array.from(root.querySelectorAll('input[name="interest-checkboxes"]:checked')).map(el => el.dataset.value);
+  const departments = Array.from(root.querySelectorAll('input[name="department-checkboxes"]:checked')).map(el => el.dataset.value);
+  const open = root.querySelector('input[name="openseats-radios"]:checked');
+  const approval = root.querySelector('input[name="approval-terms"]:checked');
+  const keyword = root.querySelector('#filter-keyword');
+  return {
+    areas,
+    interests,
+    departments,
+    openseats: open ? open.dataset.value : null,
+    approvalTerm: approval ? approval.dataset.value : null,
+    keyword: keyword ? keyword.value : ''
+  };
+}
+
+export { collectFilters };
