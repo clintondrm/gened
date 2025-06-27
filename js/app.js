@@ -268,7 +268,10 @@ function applyFilters(filters) {
 
 
     if (filters.approvalTerm) {
-      if (String(c.firstApprovalYearCode) !== String(filters.approvalTerm)) return false;
+      const term = parseInt(filters.approvalTerm, 10);
+      const first = parseInt(c.firstApprovalYearCode, 10);
+      const last = c.lastApprovalYearCode ? parseInt(c.lastApprovalYearCode, 10) : NaN;
+      if (!(first <= term && (isNaN(last) || last >= term))) return false;
     }
 
     return true;
