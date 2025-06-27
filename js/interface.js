@@ -14,6 +14,8 @@ export function uniqueAccordionId(prefix = 'accordion') {
   return `${prefix}-${accordionCounter}`;
 }
 
+let keywordInputId = 'filter-keyword';
+
 export async function initInterface(courses, onFilterChange) {
   const container = document.querySelector('#interface');
   let interests, departments;
@@ -51,6 +53,11 @@ export async function initInterface(courses, onFilterChange) {
     el.addEventListener('change', handleChange);
     el.addEventListener('input', handleChange);
   });
+
+  const keywordInput = container.querySelector(`#${keywordInputId}`);
+  if (keywordInput) {
+    keywordInput.addEventListener('keyup', handleChange);
+  }
 
   // Special behavior for GenEd Area checkboxes
   const allArea = container.querySelector('#area-checkbox-all');
@@ -92,7 +99,8 @@ function buildFilters(interests, departments, courses) {
   // GenEd areas
   html += accordionSection('areas', 'GenEd Areas', buildGenEdAreaList(genEdAreaMeta), true);
   // Keyword filter
-  html += accordionSection('keyword', 'Keyword filter', '<label for="filter-keyword" class="rvt-label rvt-m-all-remove">Search by Keyword:</label><input class="triggerFetch" type="text" id="filter-keyword">', true);
+  keywordInputId = uniqueAccordionId('keyword-search');
+  html += accordionSection('keyword', 'Keyword filter', `<label for="${keywordInputId}" class="rvt-label rvt-m-all-remove">Search by Keyword:</label><input class="triggerFetch" type="text" id="${keywordInputId}">`, true);
   // Interest categories
   html += accordionSection('interests', 'Interest Categories', buildInterestList(interests));
   // Departments
@@ -234,7 +242,7 @@ function collectFilters(root) {
   const departments = Array.from(root.querySelectorAll('input[name="department-checkboxes"]:checked')).map(el => el.dataset.value);
   const open = root.querySelector('input[name="openseats-radios"]:checked');
   const approval = root.querySelector('input[name="approval-terms"]:checked');
-  const keyword = root.querySelector('#filter-keyword');
+  const keyword = root.querySelector(`#${keywordInputId}`);
   return {
     areas,
     interests,

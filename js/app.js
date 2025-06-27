@@ -256,8 +256,9 @@ function applyFilters(filters) {
 
     if (filters.keyword) {
       const q = filters.keyword.toLowerCase();
-      const txt = collectText(c).toLowerCase();
-      if (!txt.includes(q)) return false;
+      const fields = [c.desc, c.description, c.crs_num, `${c.subj} ${c.nbr}`];
+      const match = fields.some(f => f && String(f).toLowerCase().includes(q));
+      if (!match) return false;
     }
 
     if (filters.openseats) {
