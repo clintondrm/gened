@@ -7,24 +7,10 @@
     <link rel="stylesheet" href="https://unpkg.com/rivet-core@2.8.1/css/rivet.min.css">
     <script src="https://unpkg.com/rivet-core@2.8.1/js/rivet.min.js"></script>
     <script>Rivet.init();</script>
+    <script type="module" src="js/interface.js"></script>
+    <script type="module" src="js/app.js"></script>
 </head>
 <body>
-
-    <header class="rvt-header">
-        <div class="rvt-container-lg">
-            <div class="rvt-header__trident"><a href="https://www.iu.edu">IU</a></div>
-            <span class="rvt-header__title">General Education Course Data</span>
-        </div>
-    </header>
-    <main class="rvt-container-lg rvt-p-tb-md">
-        <p>This repository provides JSON data sets for exploring the general education curriculum.</p>
-        <ul class="rvt-list-plain rvt-m-top-md">
-            <li><a href="gened-data/gened-courses.json">gened-courses.json</a></li>
-            <li><a href="gened-data/departments.json">departments.json</a></li>
-            <li><a href="gened-data/descriptions.json">descriptions.json</a></li>
-            <li><a href="gened-data/explore-gened.json">explore-gened.json</a></li>
-            <li><a href="gened-data/explore-interests.json">explore-interests.json</a></li>
-        </ul>
-    </main>
+    <main id="interface" class="rvt-container-lg rvt-p-tb-md"></main>
 </body>
 </html>

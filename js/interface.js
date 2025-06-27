@@ -5,7 +5,7 @@ export async function initInterface() {
     fetch('gened-data/explore-gened.json').then(r => r.json())
   ]);
 
-  const container = document.getElementById('interface');
+  const container = document.querySelector('#interface');
   container.innerHTML = buildFilters(interests, departments, courses);
 }
 
