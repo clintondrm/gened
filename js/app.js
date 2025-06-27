@@ -6,6 +6,7 @@ let filteredCourses = [];
 let currentPage = 1;
 let pendingFilters = null;
 let coursesPromise = null;
+let lastFocusedId = null;
 
 // SVG markup for pagination icons from Rivet Icons
 const icons = {
@@ -155,6 +156,34 @@ function collectText(value) {
   return '';
 }
 
+function captureFocus() {
+  const active = document.activeElement;
+  if (active && active.id) {
+    lastFocusedId = active.id;
+  } else {
+    lastFocusedId = null;
+  }
+}
+
+function returnFocus() {
+  if (!lastFocusedId) return;
+  const el = document.getElementById(lastFocusedId);
+  if (el) {
+    el.focus();
+  } else if (lastFocusedId.startsWith('pagination-')) {
+    const current = document.querySelector('.pagination-btn[aria-current="page"]');
+    if (current) current.focus();
+  } else {
+    const heading = document.querySelector('#course-list h3');
+    if (heading) {
+      heading.setAttribute('tabindex', '-1');
+      heading.focus();
+      heading.removeAttribute('tabindex');
+    }
+  }
+  lastFocusedId = null;
+}
+
 function renderPagination() {
   const totalPages = Math.ceil(filteredCourses.length / pageSize);
   if (totalPages <= 1) return '';
@@ -163,7 +192,7 @@ function renderPagination() {
 
   const addBtn = (labelHtml, page, ariaLabel, isCurrent = false) => {
     html += '<li class="rvt-pagination__item">';
-    html += `<a href="#0" class="rvt-pagination__link pagination-btn" aria-label="${ariaLabel}" data-page="${page}"`;
+    html += `<a href="#0" id="pagination-${page}" class="rvt-pagination__link pagination-btn" aria-label="${ariaLabel}" data-page="${page}"`;
     if (isCurrent) html += ' aria-current="page"';
     html += `>${labelHtml}</a>`;
     html += '</li>';
@@ -191,6 +220,7 @@ function renderPagination() {
 
 function render() {
   const container = document.querySelector('#course-list');
+  captureFocus();
   const start = (currentPage - 1) * pageSize;
   const pageCourses = filteredCourses.slice(start, start + pageSize);
   let html = `<h3>${filteredCourses.length} course results</h3>`;
@@ -203,6 +233,7 @@ function render() {
   } else {
     setupAccordions(container);
   }
+  returnFocus();
 }
 
 function setupAccordions(root) {
