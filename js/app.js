@@ -32,7 +32,7 @@ function renderCourses(courses) {
   courses.forEach(c => {
     const codes = Array.isArray(c.gened) ? c.gened : [c.gened];
     const code = codes[0];
-    const color = badgeClass[code] || 'info';
+    const color = areaColors[code] || 'info';
     const id = `course-${c.id}`;
     const summary = `<span class="rvt-badge rvt-badge--${color}">${code}</span>` +
                     `<span class="rvt-ts-16 rvt-m-left-sm rvt-text-bold">${c.subj} ${c.nbr}</span>` +
@@ -117,9 +117,25 @@ function render() {
   html += renderCourses(pageCourses);
   html += renderPagination();
   container.innerHTML = html;
-  if (window.Rivet && typeof window.Rivet.init === 'function') {
-    window.Rivet.init(container);
-  }
+  setupAccordions(container);
+}
+
+function setupAccordions(root) {
+  root.querySelectorAll('.rvt-accordion__toggle').forEach(btn => {
+    const target = btn.getAttribute('data-rvt-accordion-trigger');
+    const panel = root.querySelector(`[data-rvt-accordion-panel="${target}"]`);
+    if (panel) {
+      panel.style.display = 'none';
+    }
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      if (panel) {
+        panel.style.display = expanded ? 'none' : '';
+      }
+    });
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
