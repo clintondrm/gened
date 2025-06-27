@@ -9,3 +9,10 @@ nav[aria-label="Pagination"] {
 nav[aria-label="Pagination"] .rvt-pagination {
     justify-content: center;
 }
+
+/* Display the badge, course code, and description side by side */
+#course-list .rvt-accordion__toggle-text {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
