@@ -76,7 +76,7 @@ function renderCourses(courses) {
   courses.forEach(c => {
     const codes = Array.isArray(c.gened) ? c.gened : [c.gened];
     const code = codes[0];
-    const color = areaColors[code] || '#888';
+    const color = areaColors[code] || '#666';
     const id = `course-${c.id}`;
     const summary = `
       <span class="rvt-badge" style="background:${color}; border-color:${color}">${code}</span>
