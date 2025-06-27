@@ -7,6 +7,24 @@ let currentPage = 1;
 let pendingFilters = null;
 let coursesPromise = null;
 
+// SVG markup for pagination icons from Rivet Icons
+const icons = {
+  first: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M.586 8 7 14.414 8.414 13l-5-5 5-5L7 1.586.586 8Z"/>
+    <path d="M6.586 8 13 14.414 14.414 13l-5-5 5-5L13 1.586 6.586 8Z"/>
+  </svg>`,
+  prev: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M9.737.854 3.69 8l6.047 7.146 1.526-1.292L6.31 8l4.953-5.854L9.737.854Z"/>
+  </svg>`,
+  next: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M6.263 15.146 12.31 8 6.263.854 4.737 2.146 9.69 8l-4.953 5.854 1.526 1.292Z"/>
+  </svg>`,
+  last: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M9.414 8 3 1.586 1.586 3l5 5-5 5L3 14.414 9.414 8Z"/>
+    <path d="M15.414 8 9 1.586 7.586 3l5 5-5 5L9 14.414 15.414 8Z"/>
+  </svg>`
+};
+
 function getAllCourses() {
   if (!coursesPromise) {
     coursesPromise = fetch('gened-data/explore-gened.json').then(r => r.json());
@@ -143,17 +161,17 @@ function renderPagination() {
   let html = '<nav role="navigation" aria-label="Pagination" class="rvt-m-top-md">';
   html += '<ul class="rvt-pagination">';
 
-  const addBtn = (label, page, ariaLabel, isCurrent = false) => {
+  const addBtn = (labelHtml, page, ariaLabel, isCurrent = false) => {
     html += '<li class="rvt-pagination__item">';
     html += `<a href="#0" class="rvt-pagination__link pagination-btn" aria-label="${ariaLabel}" data-page="${page}"`;
     if (isCurrent) html += ' aria-current="page"';
-    html += `>${label}</a>`;
+    html += `>${labelHtml}</a>`;
     html += '</li>';
   };
 
   if (currentPage > 1) {
-    addBtn('First', 1, 'First page');
-    addBtn('Previous', currentPage - 1, 'Previous page');
+    addBtn(icons.first, 1, 'First page');
+    addBtn(icons.prev, currentPage - 1, 'Previous page');
   }
 
   const startPage = Math.max(1, currentPage - 2);
@@ -163,8 +181,8 @@ function renderPagination() {
   }
 
   if (currentPage < totalPages) {
-    addBtn('Next', currentPage + 1, 'Next page');
-    addBtn('Last', totalPages, 'Last page');
+    addBtn(icons.next, currentPage + 1, 'Next page');
+    addBtn(icons.last, totalPages, 'Last page');
   }
 
   html += '</ul></nav>';
