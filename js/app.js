@@ -198,7 +198,8 @@ function render() {
   html += renderPagination();
   container.innerHTML = html;
   if (window.Rivet && typeof window.Rivet.init === 'function') {
-    window.Rivet.init(container);
+    // Rivet was initialized globally, so dynamically added accordions are
+    // automatically picked up by its MutationObserver.
   } else {
     setupAccordions(container);
   }
