@@ -1,3 +1,11 @@
 .rvt-badge {
     color: #fff;
 }
+
+nav[aria-label="Pagination"] {
+    text-align: center;
+}
+
+nav[aria-label="Pagination"] .rvt-pagination {
+    justify-content: center;
+}
