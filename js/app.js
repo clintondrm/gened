@@ -197,7 +197,11 @@ function render() {
   html += renderCourses(pageCourses);
   html += renderPagination();
   container.innerHTML = html;
-  setupAccordions(container);
+  if (window.Rivet && typeof window.Rivet.init === 'function') {
+    window.Rivet.init(container);
+  } else {
+    setupAccordions(container);
+  }
 }
 
 function setupAccordions(root) {
