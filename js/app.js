@@ -207,3 +207,12 @@ function applyFilters(filters) {
   currentPage = 1;
   render();
 }
+
+function filterCourseList() {
+  const root = document.querySelector('#interface');
+  if (!root) return;
+  const filters = collectFilters(root);
+  applyFilters(filters);
+}
+
+export { filterCourseList };
