@@ -17,6 +17,10 @@ async function loadCourses() {
   }
 }
 
+/**
+ * Render a Rivet accordion containing course information.
+ * Each course becomes a summary button and detail panel within the accordion.
+ */
 function renderCourses(courses) {
   const areaColors = {};
   Object.entries(genEdAreaMeta).forEach(([code, info]) => {
@@ -35,23 +39,30 @@ function renderCourses(courses) {
     const code = codes[0];
     const color = areaColors[code] || '#888';
     const id = `course-${c.id}`;
-    const summary = `<span class="rvt-badge" style="background:${color}; border-color:${color}">${code}</span>` +
-                    `<span class="rvt-ts-16 rvt-m-left-sm rvt-text-bold">${c.subj} ${c.nbr}</span>` +
-                    `<span class="rvt-m-left-md">${c.desc}</span>`;
-    html += `<h4 class="rvt-accordion__summary rvt-border-bottom">` +
-            `<button class="rvt-accordion__toggle" id="${id}-label" data-rvt-accordion-trigger="${id}" aria-expanded="false">` +
-            `<span class="rvt-accordion__toggle-text">${summary}</span>` +
-            `<div class="rvt-accordion__toggle-icon">` +
-            `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">` +
-            `<g fill="currentColor">` +
-            `<path class="rvt-accordion__icon-bar" d="M8,15a1,1,0,0,1-1-1V2A1,1,0,0,1,9,2V14A1,1,0,0,1,8,15Z"></path>` +
-            `<path d="M14,9H2A1,1,0,0,1,2,7H14a1,1,0,0,1,0,2Z"></path>` +
-            `</g>` +
-            `</svg>` +
-            `</div>` +
-            `</button>` +
-            `</h4>` +
-            `<div class="rvt-accordion__panel" id="${id}" data-rvt-accordion-panel="${id}" data-rvt-accordion-panel-init="true">${renderCourseDetails(c)}</div>`;
+    const summary = `
+      <span class="rvt-badge" style="background:${color}; border-color:${color}">${code}</span>
+      <span class="rvt-ts-16 rvt-m-left-sm rvt-text-bold">${c.subj} ${c.nbr}</span>
+      <span class="rvt-m-left-md">${c.desc}</span>
+    `.trim();
+    html += `
+      <h4 class="rvt-accordion__summary rvt-border-bottom">
+        <button class="rvt-accordion__toggle" id="${id}-label" data-rvt-accordion-trigger="${id}" aria-expanded="false">
+          <span class="rvt-accordion__toggle-text">
+            ${summary}
+          </span>
+          <div class="rvt-accordion__toggle-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+              <g fill="currentColor">
+                <path class="rvt-accordion__icon-bar" d="M8,15a1,1,0,0,1-1-1V2A1,1,0,0,1,9,2V14A1,1,0,0,1,8,15Z"></path>
+                <path d="M14,9H2A1,1,0,0,1,2,7H14a1,1,0,0,1,0,2Z"></path>
+              </g>
+            </svg>
+          </div>
+        </button>
+      </h4>
+      <div class="rvt-accordion__panel" id="${id}" data-rvt-accordion-panel="${id}" data-rvt-accordion-panel-init="true">
+        ${renderCourseDetails(c)}
+      </div>`;
   });
   html += '</div>';
   return html;

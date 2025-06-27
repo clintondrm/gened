@@ -114,14 +114,38 @@ function accordionSection(key, title, innerHtml) {
   <div class="rvt-accordion__panel" id="${id}" data-rvt-accordion-panel="${id}" data-rvt-accordion-panel-init="true">${innerHtml}</div>`;
 }
 
+/**
+ * Create a fieldset containing checkboxes for each GenEd area.
+ * The list begins with an "All" option followed by a badge labeled option
+ * for every area defined in the metadata.
+ */
 function buildGenEdAreaList(meta) {
-  let html = '<fieldset class="rvt-fieldset"><legend class="rvt-sr-only">GenEd Areas</legend><ul class="rvt-list-plain rvt-width-xl">';
-  html += `<li><div class="rvt-checkbox"><input class="triggerFetch" type="checkbox" name="area-checkboxes" data-value="all" id="area-checkbox-all" checked><label for="area-checkbox-all">All GenEd Areas</label></div></li>`;
-  Object.entries(meta).forEach(([code, info]) => {
-    html += `<li><div class="rvt-checkbox"><input class="triggerFetch" type="checkbox" name="area-checkboxes" data-value="${code}" id="area-checkbox-${code.toLowerCase().replace('|','')}"><label for="area-checkbox-${code.toLowerCase().replace('|','')}"><span class="rvt-badge" style="font-size:14px; margin-right:5px; min-width:44px; text-align:center; border-color: ${info.color}; background: ${info.color}">${code.replace('|','')}</span> ${info.label}</label></div></li>`;
-  });
-  html += '</ul></fieldset>';
-  return html;
+  const items = Object.entries(meta).map(([code, info]) => `
+      <li>
+        <div class="rvt-checkbox">
+          <input class="triggerFetch" type="checkbox" name="area-checkboxes"
+                 data-value="${code}" id="area-checkbox-${code.toLowerCase().replace('|','')}">
+          <label for="area-checkbox-${code.toLowerCase().replace('|','')}">
+            <span class="rvt-badge" style="font-size:14px; margin-right:5px; min-width:44px; text-align:center; border-color: ${info.color}; background: ${info.color}">
+              ${code.replace('|','')}
+            </span> ${info.label}
+          </label>
+        </div>
+      </li>`).join('');
+
+  return `
+    <fieldset class="rvt-fieldset">
+      <legend class="rvt-sr-only">GenEd Areas</legend>
+      <ul class="rvt-list-plain rvt-width-xl">
+        <li>
+          <div class="rvt-checkbox">
+            <input class="triggerFetch" type="checkbox" name="area-checkboxes" data-value="all" id="area-checkbox-all" checked>
+            <label for="area-checkbox-all">All GenEd Areas</label>
+          </div>
+        </li>${items}
+      </ul>
+    </fieldset>
+  `.trim();
 }
 
 function buildInterestList(interests) {
