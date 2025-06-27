@@ -1,9 +1,10 @@
-import { initInterface, genEdAreaMeta, uniqueAccordionId } from './interface.js';
+import { initInterface, genEdAreaMeta, uniqueAccordionId, setFilters, collectFilters } from './interface.js';
 
 const pageSize = 10;
 let allCourses = [];
 let filteredCourses = [];
 let currentPage = 1;
+let currentFilters = null;
 let pendingFilters = null;
 let coursesPromise = null;
 let lastFocusedId = null;
@@ -273,10 +274,61 @@ function setupAccordions(root) {
   });
 }
 
+function stateToHash(filters, page) {
+  const params = new URLSearchParams();
+  if (filters.areas && filters.areas.length && !filters.areas.includes('all')) {
+    params.set('areas', filters.areas.join(','));
+  }
+  if (filters.interests && filters.interests.length) {
+    params.set('interests', filters.interests.join(','));
+  }
+  if (filters.departments && filters.departments.length) {
+    params.set('departments', filters.departments.join(','));
+  }
+  if (filters.keyword) params.set('keyword', filters.keyword);
+  if (filters.approvalTerm) params.set('approval', filters.approvalTerm);
+  if (page > 1) params.set('page', String(page));
+  return params.toString();
+}
+
+function hashToState(hash) {
+  if (hash.startsWith('#')) hash = hash.slice(1);
+  const params = new URLSearchParams(hash);
+  const filters = {
+    areas: params.get('areas') ? params.get('areas').split(',').filter(Boolean) : [],
+    interests: params.get('interests') ? params.get('interests').split(',').filter(Boolean) : [],
+    departments: params.get('departments') ? params.get('departments').split(',').filter(Boolean) : [],
+    keyword: params.get('keyword') || '',
+    approvalTerm: params.get('approval') || null
+  };
+  const page = parseInt(params.get('page'), 10) || 1;
+  return { filters, page };
+}
+
+function updateHistory(replace = false) {
+  if (!currentFilters) return;
+  const hash = stateToHash(currentFilters, currentPage);
+  const url = hash ? `#${hash}` : '';
+  const state = { filters: currentFilters, page: currentPage };
+  if (replace) {
+    history.replaceState(state, '', url);
+  } else {
+    history.pushState(state, '', url);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
+  const initState = hashToState(location.hash);
+  pendingFilters = initState.filters;
+
   const courses = await getAllCourses();
-  initInterface(courses, applyFilters);
+  initInterface(courses, handleFilterChange);
+  setFilters(document.querySelector('#interface'), initState.filters);
   await loadCourses();
+
+  currentPage = initState.page;
+  render();
+  updateHistory(true);
 
   document.querySelector('#course-list').addEventListener('click', (e) => {
     const btn = e.target.closest('.pagination-btn');
@@ -284,11 +336,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.preventDefault();
       currentPage = parseInt(btn.dataset.page, 10);
       render();
+      updateHistory();
     }
   });
 });
 
+window.addEventListener('popstate', (e) => {
+  const state = e.state || hashToState(location.hash);
+  const root = document.querySelector('#interface');
+  setFilters(root, state.filters);
+  applyFilters(state.filters);
+  currentPage = state.page;
+  render();
+});
+
 function applyFilters(filters) {
+  currentFilters = filters;
   if (!allCourses.length) {
     pendingFilters = filters;
     return;
@@ -337,11 +400,16 @@ function applyFilters(filters) {
   render();
 }
 
+function handleFilterChange(filters) {
+  applyFilters(filters);
+  updateHistory();
+}
+
 function filterCourseList() {
   const root = document.querySelector('#interface');
   if (!root) return;
   const filters = collectFilters(root);
-  applyFilters(filters);
+  handleFilterChange(filters);
 }
 
 export { filterCourseList, getAllCourses };

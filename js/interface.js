@@ -284,4 +284,42 @@ function collectFilters(root) {
   };
 }
 
-export { collectFilters };
+function setFilters(root, filters) {
+  if (!root) return;
+  const allArea = root.querySelector('#area-checkbox-all');
+  const areaBoxes = Array.from(root.querySelectorAll('input[name="area-checkboxes"]')).filter(el => el !== allArea);
+  if (filters.areas && filters.areas.length && !filters.areas.includes('all')) {
+    areaBoxes.forEach(cb => {
+      cb.checked = filters.areas.includes(cb.dataset.value);
+    });
+    const any = areaBoxes.some(cb => cb.checked);
+    allArea.checked = !any;
+    allArea.disabled = !any;
+  } else {
+    areaBoxes.forEach(cb => { cb.checked = false; });
+    allArea.checked = true;
+    allArea.disabled = true;
+  }
+
+  root.querySelectorAll('input[name="interest-checkboxes"]').forEach(cb => {
+    cb.checked = Array.isArray(filters.interests) && filters.interests.includes(cb.dataset.value);
+  });
+
+  root.querySelectorAll('input[name="department-checkboxes"]').forEach(cb => {
+    cb.checked = Array.isArray(filters.departments) && filters.departments.includes(cb.dataset.value);
+  });
+
+  const radios = root.querySelectorAll('input[name="approval-terms"]');
+  let matched = false;
+  radios.forEach(r => {
+    const match = filters.approvalTerm && String(filters.approvalTerm) === r.dataset.value;
+    r.checked = match;
+    if (match) matched = true;
+  });
+  if (!matched && radios.length) radios[0].checked = true;
+
+  const keyword = root.querySelector(`#${keywordInputId}`);
+  if (keyword) keyword.value = filters.keyword || '';
+}
+
+export { collectFilters, setFilters };
