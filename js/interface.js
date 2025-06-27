@@ -129,7 +129,7 @@ function buildFilters(interests, departments, courses) {
   // Interest categories
   html += accordionSection('interests', 'Interest Categories', buildInterestList(interests));
   // Departments
-  html += accordionSection('department', 'Course Departments', buildDepartmentList(departments));
+  html += accordionSection('department', 'Course Departments', buildDepartmentList(departments, courses));
   // Historical approvals
   html += accordionSection('approval-terms', 'Historical approvals', buildApprovalList(approvalTerms));
 
@@ -199,11 +199,24 @@ function buildInterestList(interests) {
   return html;
 }
 
-function buildDepartmentList(departments) {
+function buildDepartmentList(departments, courses) {
+  // Build a set of department codes that actually appear in the GenEd course
+  // data so we can filter the large department list down to only those that are
+  // relevant for the interface.
+  const courseDepts = new Set();
+  if (Array.isArray(courses)) {
+    courses.forEach(c => {
+      const code = c.department && c.department.CRS_SUBJ_DEPT_CD;
+      if (code) courseDepts.add(code);
+    });
+  }
+
   const map = new Map();
   Object.values(departments).forEach(d => {
-    if (!map.has(d.CRS_SUBJ_DEPT_CD)) {
-      map.set(d.CRS_SUBJ_DEPT_CD, { code: d.CRS_SUBJ_DEPT_CD, label: d.CRS_SUBJ_DESC });
+    if (!courseDepts.size || courseDepts.has(d.CRS_SUBJ_DEPT_CD)) {
+      if (!map.has(d.CRS_SUBJ_DEPT_CD)) {
+        map.set(d.CRS_SUBJ_DEPT_CD, { code: d.CRS_SUBJ_DEPT_CD, label: d.CRS_SUBJ_DESC });
+      }
     }
   });
   const entries = Array.from(map.values());
