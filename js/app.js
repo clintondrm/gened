@@ -7,7 +7,18 @@ let currentPage = 1;
 let pendingFilters = null;
 
 async function loadCourses() {
-  allCourses = await fetch('gened-data/explore-gened.json').then(r => r.json());
+  const container = document.querySelector('#course-list');
+  try {
+    // Attempt to load the list of courses from the static JSON file.
+    allCourses = await fetch('gened-data/explore-gened.json').then(r => r.json());
+  } catch (err) {
+    // Display a placeholder message if the course data cannot be retrieved.
+    if (container) {
+      container.innerHTML = '<p class="rvt-alert rvt-alert--danger">Unable to load course data.</p>';
+    }
+    console.error('Failed to load courses', err);
+    return;
+  }
   if (pendingFilters) {
     applyFilters(pendingFilters);
     pendingFilters = null;
