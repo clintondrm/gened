@@ -27,10 +27,37 @@ export async function initInterface(onFilterChange) {
     }
   }
 
-  container.querySelectorAll('.triggerFetch').forEach(el => {
+
+  // General change listeners for all triggers except the GenEd area checkboxes.
+  const nonAreaTriggers = Array.from(container.querySelectorAll('.triggerFetch'))
+    .filter(el => el.name !== 'area-checkboxes');
+  nonAreaTriggers.forEach(el => {
     el.addEventListener('change', handleChange);
     el.addEventListener('input', handleChange);
   });
+
+  // Special behavior for GenEd Area checkboxes
+  const allArea = container.querySelector('#area-checkbox-all');
+  const areaBoxes = Array.from(container.querySelectorAll('input[name="area-checkboxes"]'))
+    .filter(el => el !== allArea);
+
+  function handleAreaChange(e) {
+    if (e.target === allArea) {
+      if (allArea.checked) {
+        areaBoxes.forEach(cb => { cb.checked = false; });
+      }
+    } else {
+      if (e.target.checked) {
+        allArea.checked = false;
+      } else if (!areaBoxes.some(cb => cb.checked)) {
+        allArea.checked = true;
+      }
+    }
+    handleChange();
+  }
+
+  allArea.addEventListener('change', handleAreaChange);
+  areaBoxes.forEach(cb => cb.addEventListener('change', handleAreaChange));
 
   handleChange();
 }
