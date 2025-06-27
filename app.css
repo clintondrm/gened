@@ -13,6 +13,6 @@ nav[aria-label="Pagination"] .rvt-pagination {
 /* Display the course summary pieces in fixed and flexible columns */
 #course-list .rvt-accordion__toggle-text {
     display: grid;
-    grid-template-columns: 50px 100px 1fr;
+    grid-template-columns: 50px 140px 1fr;
     align-items: baseline;
 }
