@@ -90,9 +90,9 @@ function buildFilters(interests, departments, courses) {
   html += `<div class="rvt-accordion filter-accordion rvt-m-bottom-md" data-rvt-accordion="${accId}">`;
 
   // GenEd areas
-  html += accordionSection('areas', 'GenEd Areas', buildGenEdAreaList(genEdAreaMeta));
+  html += accordionSection('areas', 'GenEd Areas', buildGenEdAreaList(genEdAreaMeta), true);
   // Keyword filter
-  html += accordionSection('keyword', 'Keyword filter', '<label for="filter-keyword" class="rvt-label rvt-m-all-remove">Search by Keyword:</label><input class="triggerFetch" type="text" id="filter-keyword">');
+  html += accordionSection('keyword', 'Keyword filter', '<label for="filter-keyword" class="rvt-label rvt-m-all-remove">Search by Keyword:</label><input class="triggerFetch" type="text" id="filter-keyword">', true);
   // Interest categories
   html += accordionSection('interests', 'Interest Categories', buildInterestList(interests));
   // Departments
@@ -106,8 +106,9 @@ function buildFilters(interests, departments, courses) {
   return html;
 }
 
-function accordionSection(key, title, innerHtml) {
+function accordionSection(key, title, innerHtml, init = false) {
   const id = `filter-${key}`;
+  const initAttr = init ? ' data-rvt-accordion-panel-init="true"' : '';
   return `<h4 class="rvt-accordion__summary">
     <button class="rvt-accordion__toggle" id="${id}-label" data-rvt-accordion-trigger="${id}" aria-expanded="false">
       <span class="rvt-accordion__toggle-text${key==='areas'? ' rvt-ts-sm':''}">${title}</span>
@@ -121,7 +122,7 @@ function accordionSection(key, title, innerHtml) {
       </div>
     </button>
   </h4>
-  <div class="rvt-accordion__panel" id="${id}" data-rvt-accordion-panel="${id}">${innerHtml}</div>`;
+  <div class="rvt-accordion__panel" id="${id}" data-rvt-accordion-panel="${id}"${initAttr}>${innerHtml}</div>`;
 }
 
 /**
