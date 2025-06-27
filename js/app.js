@@ -1,6 +1,6 @@
 import { initInterface, genEdAreaMeta, uniqueAccordionId } from './interface.js';
 
-const pageSize = 50;
+const pageSize = 10;
 let allCourses = [];
 let filteredCourses = [];
 let currentPage = 1;
@@ -142,15 +142,31 @@ function renderPagination() {
   if (totalPages <= 1) return '';
   let html = '<nav role="navigation" aria-label="Pagination" class="rvt-m-top-md">';
   html += '<ul class="rvt-pagination">';
-  for (let i = 1; i <= totalPages; i++) {
+
+  const addBtn = (label, page, ariaLabel, isCurrent = false) => {
     html += '<li class="rvt-pagination__item">';
-    if (i === currentPage) {
-      html += `<a href="#0" class="rvt-pagination__link pagination-btn" aria-label="Page ${i}" aria-current="page" data-page="${i}">${i}</a>`;
-    } else {
-      html += `<a href="#0" class="rvt-pagination__link pagination-btn" aria-label="Page ${i}" data-page="${i}">${i}</a>`;
-    }
+    html += `<a href="#0" class="rvt-pagination__link pagination-btn" aria-label="${ariaLabel}" data-page="${page}"`;
+    if (isCurrent) html += ' aria-current="page"';
+    html += `>${label}</a>`;
     html += '</li>';
+  };
+
+  if (currentPage > 1) {
+    addBtn('First', 1, 'First page');
+    addBtn('Previous', currentPage - 1, 'Previous page');
   }
+
+  const startPage = Math.max(1, currentPage - 2);
+  const endPage = Math.min(totalPages, currentPage + 2);
+  for (let i = startPage; i <= endPage; i++) {
+    addBtn(String(i), i, `Page ${i}`, i === currentPage);
+  }
+
+  if (currentPage < totalPages) {
+    addBtn('Next', currentPage + 1, 'Next page');
+    addBtn('Last', totalPages, 'Last page');
+  }
+
   html += '</ul></nav>';
   return html;
 }
