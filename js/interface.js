@@ -90,16 +90,28 @@ export async function initInterface(courses, onFilterChange) {
   const areaBoxes = Array.from(container.querySelectorAll('input[name="area-checkboxes"]'))
     .filter(el => el !== allArea);
 
+  // When "All GenEd Areas" is checked, it should be disabled so users
+  // cannot uncheck it directly. The checkbox becomes enabled again when any
+  // specific area option is selected.
+  if (allArea) {
+    allArea.disabled = allArea.checked;
+  }
+
   function handleAreaChange(e) {
     if (e.target === allArea) {
       if (allArea.checked) {
         areaBoxes.forEach(cb => { cb.checked = false; });
+        allArea.disabled = true;
+      } else {
+        allArea.disabled = false;
       }
     } else {
       if (e.target.checked) {
         allArea.checked = false;
+        allArea.disabled = false;
       } else if (!areaBoxes.some(cb => cb.checked)) {
         allArea.checked = true;
+        allArea.disabled = true;
       }
     }
     handleChange(e);
