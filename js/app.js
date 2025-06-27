@@ -278,7 +278,13 @@ function applyFilters(filters) {
     // areas
     if (filters.areas && filters.areas.length && !filters.areas.includes('all')) {
       const codes = Array.isArray(c.gened) ? c.gened : [c.gened];
-      if (!filters.areas.some(a => codes.includes(a))) return false;
+      const matchArea = filters.areas.some(a => {
+        if (a === 'NM|NS') {
+          return codes.includes('NM') || codes.includes('NS');
+        }
+        return codes.includes(a);
+      });
+      if (!matchArea) return false;
     }
 
     if (filters.departments && filters.departments.length) {

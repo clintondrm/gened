@@ -162,18 +162,22 @@ function accordionSection(key, title, innerHtml, init = false) {
  * for every area defined in the metadata.
  */
 function buildGenEdAreaList(meta) {
-  const items = Object.entries(meta).map(([code, info]) => `
+  const items = Object.entries(meta).map(([code, info]) => {
+    const display = code === 'NM|NS' ? 'NM' : code;
+    const id = `area-checkbox-${display.toLowerCase()}`;
+    return `
       <li>
         <div class="rvt-checkbox">
           <input class="triggerFetch" type="checkbox" name="area-checkboxes"
-                 data-value="${code}" id="area-checkbox-${code.toLowerCase().replace('|','')}">
-          <label for="area-checkbox-${code.toLowerCase().replace('|','')}">
+                 data-value="${code}" id="${id}">
+          <label for="${id}">
             <span class="rvt-badge" style="font-size:14px; margin-right:5px; min-width:44px; text-align:center; border-color: ${info.color}; background: ${info.color}">
-              ${code.replace('|','')}
+              ${display}
             </span> ${info.label}
           </label>
         </div>
-      </li>`).join('');
+      </li>`;
+  }).join('');
 
   return `
     <fieldset class="rvt-fieldset" id="gened-area-filter">
