@@ -15,13 +15,24 @@ export function uniqueAccordionId(prefix = 'accordion') {
 }
 
 export async function initInterface(onFilterChange) {
-  const [interests, departments, courses] = await Promise.all([
-    fetch('gened-data/explore-interests.json').then(r => r.json()),
-    fetch('gened-data/departments.json').then(r => r.json()),
-    fetch('gened-data/explore-gened.json').then(r => r.json())
-  ]);
-
   const container = document.querySelector('#interface');
+  let interests, departments, courses;
+  try {
+    // Load interface data used for filters.
+    [interests, departments, courses] = await Promise.all([
+      fetch('gened-data/explore-interests.json').then(r => r.json()),
+      fetch('gened-data/departments.json').then(r => r.json()),
+      fetch('gened-data/explore-gened.json').then(r => r.json())
+    ]);
+  } catch (err) {
+    // Show a placeholder alert when the filter data cannot be retrieved.
+    if (container) {
+      container.innerHTML = '<p class="rvt-alert rvt-alert--danger">Unable to load filter options.</p>';
+    }
+    console.error('Failed to load interface data', err);
+    return;
+  }
+
   container.innerHTML = buildFilters(interests, departments, courses);
   if (window.Rivet && typeof window.Rivet.init === 'function') {
     window.Rivet.init(container);
