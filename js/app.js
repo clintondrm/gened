@@ -29,19 +29,67 @@ function renderCourses(courses) {
     'WL': 'red'
   };
 
-  let html = '<ul class="rvt-list-plain">';
+  let html = '<div class="rvt-accordion" data-rvt-accordion="course-accordion">';
   courses.forEach(c => {
     const codes = Array.isArray(c.gened) ? c.gened : [c.gened];
     const code = codes[0];
     const color = badgeClass[code] || 'info';
-    html += `<li class="rvt-border-bottom rvt-p-top-sm rvt-p-bottom-sm">` +
-            `<span class="rvt-badge rvt-badge--${color}">${code}</span>` +
-            `<span class="rvt-ts-16 rvt-m-left-sm rvt-text-bold">${c.subj} ${c.nbr}</span>` +
-            `<span class="rvt-m-left-md">${c.desc}</span>` +
-            `</li>`;
+    const id = `course-${c.id}`;
+    const summary = `<span class="rvt-badge rvt-badge--${color}">${code}</span>` +
+                    `<span class="rvt-ts-16 rvt-m-left-sm rvt-text-bold">${c.subj} ${c.nbr}</span>` +
+                    `<span class="rvt-m-left-md">${c.desc}</span>`;
+    html += `<h4 class="rvt-accordion__summary rvt-border-bottom">` +
+            `<button class="rvt-accordion__toggle" id="${id}-label" data-rvt-accordion-trigger="${id}" aria-expanded="false">` +
+            `<span class="rvt-accordion__toggle-text">${summary}</span>` +
+            `<div class="rvt-accordion__toggle-icon">` +
+            `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">` +
+            `<g fill="currentColor">` +
+            `<path class="rvt-accordion__icon-bar" d="M8,15a1,1,0,0,1-1-1V2A1,1,0,0,1,9,2V14A1,1,0,0,1,8,15Z"></path>` +
+            `<path d="M14,9H2A1,1,0,0,1,2,7H14a1,1,0,0,1,0,2Z"></path>` +
+            `</g>` +
+            `</svg>` +
+            `</div>` +
+            `</button>` +
+            `</h4>` +
+            `<div class="rvt-accordion__panel" id="${id}" data-rvt-accordion-panel="${id}" data-rvt-accordion-panel-init="true">${renderCourseDetails(c)}</div>`;
   });
-  html += '</ul>';
+  html += '</div>';
   return html;
+}
+
+function renderCourseDetails(course) {
+  let html = '';
+  if (course.description) {
+    html += `<p>${course.description}</p>`;
+  } else if (course.desc) {
+    html += `<p>${course.desc}</p>`;
+  }
+  if (course.department && course.department.CRS_SUBJ_DESC) {
+    html += `<p><strong>Department:</strong> ${course.department.CRS_SUBJ_DESC}</p>`;
+  }
+  if (course.interestCategoryLabels && course.interestCategoryLabels.length) {
+    html += `<p><strong>Interest Categories:</strong> ${course.interestCategoryLabels.join(', ')}</p>`;
+  }
+  if (course.interests && course.interests.length) {
+    html += `<p><strong>Interests:</strong> ${course.interests.join(', ')}</p>`;
+  }
+  if (course.available && course.available.length) {
+    const terms = course.available.map(a => a.label).join(', ');
+    html += `<p><strong>Available Terms:</strong> ${terms}</p>`;
+  }
+  if (course.firstApprovalYearCode) {
+    html += `<p><strong>First Approved:</strong> ${approvalLabel(course.firstApprovalYearCode)}</p>`;
+  }
+  if (course.lastApprovalYearCode) {
+    html += `<p><strong>Last Approved:</strong> ${approvalLabel(course.lastApprovalYearCode)}</p>`;
+  }
+  return html;
+}
+
+function approvalLabel(code) {
+  const start = Math.floor((code - 4100) / 10) + 2010;
+  const end = start + 1;
+  return `${start}\u2013${end} Academic Year`;
 }
 
 function renderPagination() {
@@ -67,6 +115,9 @@ function render() {
   html += renderCourses(pageCourses);
   html += renderPagination();
   container.innerHTML = html;
+  if (window.Rivet && typeof window.Rivet.init === 'function') {
+    window.Rivet.init(container);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
