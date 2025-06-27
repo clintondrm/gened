@@ -1,4 +1,4 @@
-import { initInterface } from './interface.js';
+import { initInterface, genEdAreaMeta } from './interface.js';
 
 const pageSize = 50;
 let allCourses = [];
@@ -18,24 +18,23 @@ async function loadCourses() {
 }
 
 function renderCourses(courses) {
-  const badgeClass = {
-    'AH': 'teal',
-    'EC': 'orange',
-    'MM': 'orange',
-    'NM': 'green',
-    'NS': 'green',
-    'SH': 'blue',
-    'WC': 'purple',
-    'WL': 'red'
-  };
+  const areaColors = {};
+  Object.entries(genEdAreaMeta).forEach(([code, info]) => {
+    if (code === 'NM|NS') {
+      areaColors['NM'] = info.color;
+      areaColors['NS'] = info.color;
+    } else {
+      areaColors[code] = info.color;
+    }
+  });
 
   let html = '<ul class="rvt-list-plain">';
   courses.forEach(c => {
     const codes = Array.isArray(c.gened) ? c.gened : [c.gened];
     const code = codes[0];
-    const color = badgeClass[code] || 'info';
+    const color = areaColors[code] || '#6c757d';
     html += `<li class="rvt-border-bottom rvt-p-top-sm rvt-p-bottom-sm">` +
-            `<span class="rvt-badge rvt-badge--${color}">${code}</span>` +
+            `<span class="rvt-badge rvt-badge--info" style="border-color: ${color}; background: ${color}">${code}</span>` +
             `<span class="rvt-ts-16 rvt-m-left-sm rvt-text-bold">${c.subj} ${c.nbr}</span>` +
             `<span class="rvt-m-left-md">${c.desc}</span>` +
             `</li>`;

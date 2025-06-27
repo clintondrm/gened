@@ -1,3 +1,13 @@
+export const genEdAreaMeta = {
+  'AH': { label: 'Arts & Humanities', color: '#48183D' },
+  'EC': { label: 'English Composition', color: '#00385F' },
+  'MM': { label: 'Mathematical Modeling', color: '#006298' },
+  'NM|NS': { label: 'Natural & Math. Sciences', color: '#056E41' },
+  'SH': { label: 'Social & Hist. Studies', color: '#A36B00' },
+  'WC': { label: 'World Cultures', color: '#DF3603' },
+  'WL': { label: 'World Languages', color: '#DC231E' }
+};
+
 export async function initInterface(onFilterChange) {
   const [interests, departments, courses] = await Promise.all([
     fetch('gened-data/explore-interests.json').then(r => r.json()),
@@ -26,15 +36,6 @@ export async function initInterface(onFilterChange) {
 }
 
 function buildFilters(interests, departments, courses) {
-  const genEdAreaMeta = {
-    'AH': { label: 'Arts & Humanities', color: '#48183D' },
-    'EC': { label: 'English Composition', color: '#00385F' },
-    'MM': { label: 'Mathematical Modeling', color: '#006298' },
-    'NM|NS': { label: 'Natural & Math. Sciences', color: '#056E41' },
-    'SH': { label: 'Social & Hist. Studies', color: '#A36B00' },
-    'WC': { label: 'World Cultures', color: '#DF3603' },
-    'WL': { label: 'World Languages', color: '#DC231E' }
-  };
 
   const openTerms = collectOpenTerms(courses);
   const approvalTerms = collectApprovalTerms(courses);
