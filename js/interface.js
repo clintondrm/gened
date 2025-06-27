@@ -121,7 +121,7 @@ function accordionSection(key, title, innerHtml) {
       </div>
     </button>
   </h4>
-  <div class="rvt-accordion__panel" id="${id}" data-rvt-accordion-panel="${id}" data-rvt-accordion-panel-init="true">${innerHtml}</div>`;
+  <div class="rvt-accordion__panel" id="${id}" data-rvt-accordion-panel="${id}">${innerHtml}</div>`;
 }
 
 /**
