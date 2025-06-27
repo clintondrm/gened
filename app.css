@@ -16,3 +16,8 @@ nav[aria-label="Pagination"] .rvt-pagination {
     grid-template-columns: 50px 140px 1fr;
     align-items: baseline;
 }
+
+#course-list .badge-cell {
+    display: flex;
+    align-items: center;
+}

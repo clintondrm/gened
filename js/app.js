@@ -79,7 +79,9 @@ function renderCourses(courses) {
     const color = areaColors[code] || '#666';
     const id = `course-${c.id}`;
     const summary = `
-      <span class="rvt-badge" style="background:${color}; border-color:${color}">${code}</span>
+      <span class="badge-cell">
+        <span class="rvt-badge" style="background:${color}; border-color:${color}">${code}</span>
+      </span>
       <span class="rvt-ts-16 rvt-m-left-sm rvt-text-bold">${c.subj} ${c.nbr}</span>
       <span class="rvt-m-left-md">${c.desc}</span>
     `.trim();
