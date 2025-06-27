@@ -85,7 +85,7 @@ function renderCourses(courses) {
     `.trim();
     html += `
       <h4 class="rvt-accordion__summary rvt-border-bottom">
-        <button class="rvt-accordion__toggle rvt-p-all-xs" id="${id}-label" data-rvt-accordion-trigger="${id}" aria-expanded="false">
+        <button class="rvt-accordion__toggle rvt-p-all-md" id="${id}-label" data-rvt-accordion-trigger="${id}" aria-expanded="false">
           <span class="rvt-accordion__toggle-text">
             ${summary}
           </span>
