@@ -80,7 +80,7 @@ function renderCourses(courses) {
           </div>
         </button>
       </h4>
-      <div class="rvt-accordion__panel" id="${id}" data-rvt-accordion-panel="${id}" data-rvt-accordion-panel-init="true">
+      <div class="rvt-accordion__panel" id="${id}" data-rvt-accordion-panel="${id}">
         ${renderCourseDetails(c)}
       </div>`;
   });
