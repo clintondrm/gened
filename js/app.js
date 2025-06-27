@@ -83,7 +83,7 @@ function renderCourses(courses) {
         <span class="rvt-badge" style="background:${color}; border-color:${color}">${code}</span>
       </span>
       <span class="rvt-ts-16 rvt-m-left-sm rvt-text-bold">${c.subj} ${c.nbr}</span>
-      <span class="rvt-m-left-md">${c.desc}</span>
+      <span>${c.desc}</span>
     `.trim();
     html += `
       <h4 class="rvt-accordion__summary rvt-border-bottom">
