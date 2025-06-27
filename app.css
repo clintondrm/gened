@@ -22,6 +22,11 @@ nav[aria-label="Pagination"] .rvt-pagination {
     align-items: center;
 }
 
+/* Make course list buttons square */
+#course-list button.rvt-accordion__toggle {
+    border-radius: 0;
+}
+
 /* Adjust h4 font size */
 h4 {
     font-size: .9rem;
