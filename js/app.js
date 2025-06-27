@@ -1,4 +1,4 @@
-import { initInterface, genEdAreaMeta } from './interface.js';
+import { initInterface, genEdAreaMeta, uniqueAccordionId } from './interface.js';
 
 const pageSize = 50;
 let allCourses = [];
@@ -28,13 +28,14 @@ function renderCourses(courses) {
     }
   });
 
-  let html = '<div class="rvt-accordion" data-rvt-accordion="course-accordion">';
+  const accordionId = uniqueAccordionId('course-accordion');
+  let html = `<div class="rvt-accordion" data-rvt-accordion="${accordionId}">`;
   courses.forEach(c => {
     const codes = Array.isArray(c.gened) ? c.gened : [c.gened];
     const code = codes[0];
-    const color = areaColors[code] || 'info';
+    const color = areaColors[code] || '#888';
     const id = `course-${c.id}`;
-    const summary = `<span class="rvt-badge rvt-badge--${color}">${code}</span>` +
+    const summary = `<span class="rvt-badge" style="background:${color}; border-color:${color}">${code}</span>` +
                     `<span class="rvt-ts-16 rvt-m-left-sm rvt-text-bold">${c.subj} ${c.nbr}</span>` +
                     `<span class="rvt-m-left-md">${c.desc}</span>`;
     html += `<h4 class="rvt-accordion__summary rvt-border-bottom">` +

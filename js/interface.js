@@ -8,6 +8,12 @@ export const genEdAreaMeta = {
   'WL': { label: 'World Languages', color: '#DC231E' }
 };
 
+let accordionCounter = 0;
+export function uniqueAccordionId(prefix = 'accordion') {
+  accordionCounter += 1;
+  return `${prefix}-${accordionCounter}`;
+}
+
 export async function initInterface(onFilterChange) {
   const [interests, departments, courses] = await Promise.all([
     fetch('gened-data/explore-interests.json').then(r => r.json()),
@@ -70,7 +76,8 @@ function buildFilters(interests, departments, courses) {
   let html = '';
   html += '<div class="rvt-p-all-none">';
   html += '<h3 class="rvt-ts-md rvt-bold rvt-m-bottom-sm">Filters</h3>';
-  html += '<div class="rvt-accordion filter-accordion rvt-m-bottom-md" data-rvt-accordion="filter-accordion">';
+  const accId = uniqueAccordionId('filter-accordion');
+  html += `<div class="rvt-accordion filter-accordion rvt-m-bottom-md" data-rvt-accordion="${accId}">`;
 
   // GenEd areas
   html += accordionSection('areas', 'GenEd Areas', buildGenEdAreaList(genEdAreaMeta));
@@ -111,7 +118,7 @@ function buildGenEdAreaList(meta) {
   let html = '<fieldset class="rvt-fieldset"><legend class="rvt-sr-only">GenEd Areas</legend><ul class="rvt-list-plain rvt-width-xl">';
   html += `<li><div class="rvt-checkbox"><input class="triggerFetch" type="checkbox" name="area-checkboxes" data-value="all" id="area-checkbox-all" checked><label for="area-checkbox-all">All GenEd Areas</label></div></li>`;
   Object.entries(meta).forEach(([code, info]) => {
-    html += `<li><div class="rvt-checkbox"><input class="triggerFetch" type="checkbox" name="area-checkboxes" data-value="${code}" id="area-checkbox-${code.toLowerCase().replace('|','')}"><label for="area-checkbox-${code.toLowerCase().replace('|','')}"><span class="rvt-badge rvt-badge--info" style="font-size:14px; margin-right:5px; min-width:44px; text-align:center; border-color: ${info.color}; background: ${info.color}">${code.replace('|','')}</span> ${info.label}</label></div></li>`;
+    html += `<li><div class="rvt-checkbox"><input class="triggerFetch" type="checkbox" name="area-checkboxes" data-value="${code}" id="area-checkbox-${code.toLowerCase().replace('|','')}"><label for="area-checkbox-${code.toLowerCase().replace('|','')}"><span class="rvt-badge" style="font-size:14px; margin-right:5px; min-width:44px; text-align:center; border-color: ${info.color}; background: ${info.color}">${code.replace('|','')}</span> ${info.label}</label></div></li>`;
   });
   html += '</ul></fieldset>';
   return html;
@@ -203,4 +210,4 @@ function collectFilters(root) {
   };
 }
 
-export { collectFilters };
+export { collectFilters, uniqueAccordionId };
