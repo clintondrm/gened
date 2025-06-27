@@ -5,9 +5,17 @@ let allCourses = [];
 let filteredCourses = [];
 let currentPage = 1;
 let pendingFilters = null;
+let coursesPromise = null;
+
+function getAllCourses() {
+  if (!coursesPromise) {
+    coursesPromise = fetch('gened-data/explore-gened.json').then(r => r.json());
+  }
+  return coursesPromise;
+}
 
 async function loadCourses() {
-  allCourses = await fetch('gened-data/explore-gened.json').then(r => r.json());
+  allCourses = await getAllCourses();
   if (pendingFilters) {
     applyFilters(pendingFilters);
     pendingFilters = null;
@@ -153,9 +161,10 @@ function setupAccordions(root) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  initInterface(applyFilters);
-  loadCourses();
+document.addEventListener('DOMContentLoaded', async () => {
+  const courses = await getAllCourses();
+  initInterface(courses, applyFilters);
+  await loadCourses();
 
   document.querySelector('#course-list').addEventListener('click', (e) => {
     const btn = e.target.closest('.pagination-btn');
@@ -215,4 +224,4 @@ function filterCourseList() {
   applyFilters(filters);
 }
 
-export { filterCourseList };
+export { filterCourseList, getAllCourses };

@@ -14,11 +14,10 @@ export function uniqueAccordionId(prefix = 'accordion') {
   return `${prefix}-${accordionCounter}`;
 }
 
-export async function initInterface(onFilterChange) {
-  const [interests, departments, courses] = await Promise.all([
+export async function initInterface(courses, onFilterChange) {
+  const [interests, departments] = await Promise.all([
     fetch('gened-data/explore-interests.json').then(r => r.json()),
-    fetch('gened-data/departments.json').then(r => r.json()),
-    fetch('gened-data/explore-gened.json').then(r => r.json())
+    fetch('gened-data/departments.json').then(r => r.json())
   ]);
 
   const container = document.querySelector('#interface');
