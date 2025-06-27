@@ -40,7 +40,7 @@ function buildFilters(interests, departments, courses) {
   const approvalTerms = collectApprovalTerms(courses);
 
   let html = '';
-  html += '<div class="rvt-cols-4-md rvt-p-all-none">';
+  html += '<div class="rvt-p-all-none">';
   html += '<h3 class="rvt-ts-md rvt-bold rvt-m-bottom-sm">Filters</h3>';
   html += '<div class="rvt-accordion filter-accordion rvt-m-bottom-md" data-rvt-accordion="filter-accordion">';
 
