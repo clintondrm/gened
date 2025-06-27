@@ -91,6 +91,20 @@ function approvalLabel(code) {
   return `${start}\u2013${end} Academic Year`;
 }
 
+function collectText(value) {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+    return String(value);
+  }
+  if (Array.isArray(value)) {
+    return value.map(v => collectText(v)).join(' ');
+  }
+  if (typeof value === 'object') {
+    return Object.values(value).map(v => collectText(v)).join(' ');
+  }
+  return '';
+}
+
 function renderPagination() {
   const totalPages = Math.ceil(filteredCourses.length / pageSize);
   if (totalPages <= 1) return '';
@@ -159,7 +173,7 @@ function applyFilters(filters) {
 
     if (filters.keyword) {
       const q = filters.keyword.toLowerCase();
-      const txt = `${c.desc || ''} ${c.description || ''}`.toLowerCase();
+      const txt = collectText(c).toLowerCase();
       if (!txt.includes(q)) return false;
     }
 
